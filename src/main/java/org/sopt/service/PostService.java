@@ -57,6 +57,11 @@ public class PostService {
         return true;
     }
 
+    public List<Post> getPostByKeyword(String keyword) {
+        Validator.validateEmpty(keyword);
+        return postRepository.findPostByKeyWord(keyword);
+    }
+
     public boolean deletePostById(int id) {
         return postRepository.delete(id);
     }

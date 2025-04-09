@@ -2,7 +2,6 @@ package org.sopt.controller;
 
 import org.sopt.domain.Post;
 import org.sopt.service.PostService;
-import org.sopt.util.Validator;
 
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class PostController {
     }
 
     public List<Post> searchPostsByKeyword(String keyword) {
-        return null;
+        return postService.getPostByKeyword(keyword);
     }
 
 }

@@ -5,7 +5,7 @@ public class Validator {
 
     public static void validateEmpty(String title) {
         if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("❌ 제목이 비어있습니다.");
+            throw new IllegalArgumentException("❌ 입력값이 비어있습니다.");
         }
     }
 

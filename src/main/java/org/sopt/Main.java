@@ -91,14 +91,19 @@ public class Main {
                     System.out.println("\n🔎 [게시글 검색]");
                     System.out.print("검색할 키워드를 입력해주세요: ");
                     String keyword = scanner.nextLine();
-                    List<Post> results = controller.searchPostsByKeyword(keyword);
-                    if (results.isEmpty()) {
-                        System.out.println("🔍 검색 결과가 없습니다.");
-                    } else {
-                        System.out.println("📋 검색 결과:");
-                        for (Post post : results) {
-                            System.out.printf("🆔 %d | 📌 제목: %s\n", post.getId(), post.getTitle());
+
+                    try {
+                        List<Post> results = controller.searchPostsByKeyword(keyword);
+                        if (results.isEmpty()) {
+                            System.out.println("🔍 검색 결과가 없습니다.");
+                        } else {
+                            System.out.println("📋 검색 결과:");
+                            for (Post post : results) {
+                                System.out.printf("🆔 %d | 📌 제목: %s\n", post.getId(), post.getTitle());
+                            }
                         }
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;
 

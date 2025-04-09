@@ -40,6 +40,17 @@ public class PostRepository {
         return false;
     }
 
+    public List<Post> findPostByKeyWord(String keyword) {
+        List<Post> searchResult = new ArrayList<>();
+
+        for (Post post : postList) {
+            if (post.getTitle().contains(keyword)) {
+                searchResult.add(post);
+            }
+        }
+        return searchResult;
+    }
+
     public boolean delete(int id) {
         for (Post post : postList) {
             if (post.getId() == id) {
