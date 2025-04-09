@@ -24,8 +24,12 @@ public class Main {
                     System.out.println("\n📝 [게시글 작성]");
                     System.out.print("📌 제목을 입력해주세요: ");
                     String title = scanner.nextLine();
-                    controller.createPost(title);
-                    System.out.println("✅ 게시글이 성공적으로 저장되었습니다!");
+                    try {
+                        controller.createPost(title);
+                        System.out.println("✅ 게시글이 성공적으로 저장되었습니다!");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
 
                 case "2":
@@ -63,9 +67,12 @@ public class Main {
                     }
                     System.out.print("📝 새 제목을 입력해주세요: ");
                     String newTitle = scanner.nextLine();
-                    controller.updatePostTitle(editId, newTitle);
-                    System.out.println("✅ 게시글이 성공적으로 수정되었습니다.");
-
+                    try {
+                        controller.updatePostTitle(editId, newTitle);
+                        System.out.println("✅ 게시글이 성공적으로 수정되었습니다.");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
 
                 case "5":

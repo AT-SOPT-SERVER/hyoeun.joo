@@ -2,6 +2,7 @@ package org.sopt.controller;
 
 import org.sopt.domain.Post;
 import org.sopt.service.PostService;
+import org.sopt.util.Validator;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class PostController {
     private final PostService postService = new PostService();
 
     public void createPost(final String title) {
+        Validator.validateEmptyTitle(title);
         postService.createPost(title);
     }
 
@@ -23,6 +25,7 @@ public class PostController {
     }
 
     public Boolean updatePostTitle(int id, String newTitle) {
+        Validator.validateEmptyTitle(newTitle);
         return postService.updatePost(id, newTitle);
     }
 
