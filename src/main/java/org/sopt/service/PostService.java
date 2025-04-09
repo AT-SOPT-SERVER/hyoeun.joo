@@ -5,6 +5,8 @@ import org.sopt.repository.PostRepository;
 import org.sopt.util.IdGenerator;
 import org.sopt.util.Validator;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 //서비스는 레포지토리를 사용함 (2_
@@ -14,9 +16,15 @@ import java.util.List;
 
 public class PostService {
     private final PostRepository postRepository = new PostRepository();
+    private LocalDateTime latestPostCreatedTime;
 
     public void createPost(String title) {
         int id = IdGenerator.generatePostId();
+
+        if (latestPostCreatedTime != null && Duration.between(latestPostCreatedTime, LocalDateTime.now()).toMinutes() < 3) {
+            throw new IllegalStateException("❌ 도배 방지 : 게시글은 마지막 작성 후 3분이 지나야 작성 가능합니다.");
+
+        }
 
         Validator.validateEmpty(title);
         Validator.validateMaxLength(title);
@@ -27,6 +35,8 @@ public class PostService {
 
         Post post = new Post(id, title);
         postRepository.save(post);
+
+        latestPostCreatedTime = LocalDateTime.now();
     }
 
     public List<Post> getAllPosts() {
