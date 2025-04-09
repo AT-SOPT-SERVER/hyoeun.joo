@@ -2,6 +2,7 @@ package org.sopt.service;
 
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
+import org.sopt.util.Validator;
 
 import java.util.List;
 
@@ -15,8 +16,13 @@ public class PostService {
     private int postId = 1;
 
     public void createPost(String title) {
-        Post post = new Post(postId++, title);
+        Validator.validateEmpty(title);
+        Validator.validateMaxLength(title);
 
+        if (postRepository.isExistByTitle(title)) {
+            throw new IllegalArgumentException("❌ 이미 존재하는 제목입니다!");
+        }
+        Post post = new Post(postId++, title);
         postRepository.save(post);
     }
 
@@ -30,6 +36,7 @@ public class PostService {
 
     public boolean updatePost(int updateId, String newTitle) {
         Post post = postRepository.findPostById(updateId);
+        Validator.validateMaxLength(newTitle);
         if (post == null) {
             return false;
         }

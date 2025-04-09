@@ -30,6 +30,16 @@ public class PostRepository {
         return null;
     }
 
+    public boolean isExistByTitle(String title) {
+        for (Post post : postList) {
+            //대소문자를 구별하지 않고 확인
+            if (post.getTitle().equalsIgnoreCase(title)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean delete(int id) {
         for (Post post : postList) {
             if (post.getId() == id) {

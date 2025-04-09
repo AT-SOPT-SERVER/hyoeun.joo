@@ -12,7 +12,6 @@ public class PostController {
     private final PostService postService = new PostService();
 
     public void createPost(final String title) {
-        Validator.validateEmptyTitle(title);
         postService.createPost(title);
     }
 
@@ -25,7 +24,6 @@ public class PostController {
     }
 
     public Boolean updatePostTitle(int id, String newTitle) {
-        Validator.validateEmptyTitle(newTitle);
         return postService.updatePost(id, newTitle);
     }
 
