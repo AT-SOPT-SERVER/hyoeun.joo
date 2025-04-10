@@ -45,6 +45,8 @@ public class PostService {
     public boolean updatePost(int updateId, String newTitle) {
         Post post = postRepository.findPostById(updateId);
         Validator.validateMaxLength(newTitle);
+        Validator.validateEmpty(newTitle);
+
         if (post == null) {
             return false;
         }
