@@ -6,8 +6,7 @@ import org.sopt.service.PostService;
 import java.util.List;
 
 public class PostController {
-    //(1)
-    //요청이 들어오면 어떤 요청인지 판단한 후 어떤 서비스를 사용할 지 연결해주는 역할을 함
+
     private final PostService postService = new PostService();
 
     public void createPost(final String title) {

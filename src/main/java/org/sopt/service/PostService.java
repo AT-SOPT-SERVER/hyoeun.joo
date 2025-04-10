@@ -9,11 +9,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//서비스는 레포지토리를 사용함 (2_
-//서비스는 비지니스 로직에 대한 정보를 담아있어야 됨.
-//사용자의 요청에 따라서 DB에 접근하여 데이터를 추가/삭제/수정을 요청을 처리할 수 있어야 함
-//여러 도메인 계층을 조율하는 역할을 함
-
 public class PostService {
     private final PostRepository postRepository = new PostRepository();
     private LocalDateTime latestPostCreatedTime;
