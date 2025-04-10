@@ -1,5 +1,7 @@
 package org.sopt.util;
 
+import java.text.BreakIterator;
+
 public class Validator {
     public static final int MAX_TITLE_LENGTH = 30;
 
@@ -10,8 +12,19 @@ public class Validator {
     }
 
     public static void validateMaxLength(String title) {
-        if (title.length() > MAX_TITLE_LENGTH) {
+        int length = countGraphemeClusters(title);
+        if (length > MAX_TITLE_LENGTH) {
             throw new IllegalArgumentException("❌ 제목은 " + MAX_TITLE_LENGTH + "자 이하여야 합니다!");
         }
+    }
+
+    private static int countGraphemeClusters(String text) {
+        BreakIterator it = BreakIterator.getCharacterInstance();
+        it.setText(text);
+        int count = 0;
+        while (it.next() != BreakIterator.DONE) {
+            count++;
+        }
+        return count;
     }
 }
