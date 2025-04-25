@@ -1,6 +1,7 @@
 package org.sopt.controller;
 
 import org.sopt.dto.request.PostRequest;
+import org.sopt.dto.request.PostUpdateRequest;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.global.response.PostResponseMessage;
 import org.sopt.service.PostService;
@@ -42,9 +43,9 @@ public class PostController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updatePostTitle(
             @PathVariable Long id,
-            @RequestParam String newTitle) {
+            @RequestBody final PostUpdateRequest postUpdateRequest) {
 
-        postService.updatePost(id, newTitle);
+        postService.updatePost(id, postUpdateRequest);
         return ResponseEntity.ok(ResponseUtil.success(PostResponseMessage.POST_UPDATE_SUCCESS.getMessage(), null));
     }
 

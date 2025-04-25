@@ -15,9 +15,9 @@ public class PostMapper {
         return new Post(request.getTitle());
     }
 
-    //record 사용 + dto에서 필요한 필드(title)만 가져오는 mapper 역할
-    public static Post toEntity(PostUpdateRequest request) {
-        return new Post(request.newTitle());
+    //record 사용 + dto에서 필요한 필드(title)만 가져오는 mapper 형태
+    public static String extractNewTitle(PostUpdateRequest request) {
+        return request.newTitle();
     }
 
     public static PostResponse toResponse(Post post) {

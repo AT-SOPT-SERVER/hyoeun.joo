@@ -3,6 +3,7 @@ package org.sopt.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.sopt.domain.Post;
 import org.sopt.dto.request.PostRequest;
+import org.sopt.dto.request.PostUpdateRequest;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.global.exception.PostErrorMessage;
 import org.sopt.mapper.PostMapper;
@@ -50,13 +51,14 @@ public class PostService {
     }
 
     @Transactional
-    public void updatePost(Long updateId, String newTitle) {
+    public void updatePost(Long updateId, final PostUpdateRequest postUpdateRequest) {
         Post post = postRepository.findById(updateId)
                 .orElseThrow(() -> new EntityNotFoundException(PostErrorMessage.POST_NOT_FOUND_ERROR.getMessage()));
 
-        Validator.validateMaxLength(newTitle);
-        Validator.validateEmpty(newTitle);
+        Validator.validateMaxLength(postUpdateRequest.newTitle());
+        Validator.validateEmpty(postUpdateRequest.newTitle());
 
+        String newTitle = PostMapper.extractNewTitle(postUpdateRequest);
         post.updateTitle(newTitle);
     }
 
