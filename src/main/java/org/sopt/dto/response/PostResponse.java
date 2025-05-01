@@ -1,21 +1,19 @@
 package org.sopt.dto.response;
 
 public class PostResponse {
-    private Long id;
+    private String authorName;
     private String title;
 
-    public PostResponse(Long id, String title) {
-        this.id = id;
+    public PostResponse(String authorName, String title) {
+        this.authorName = authorName;
         this.title = title;
     }
 
-    public Long getId() {
-        return id;
+    public String getAuthorName() {
+        return authorName;
     }
 
     public String getTitle() {
         return title;
     }
 }
-
-

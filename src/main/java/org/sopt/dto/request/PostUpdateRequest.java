@@ -1,5 +1,8 @@
 package org.sopt.dto.request;
 
-public record PostUpdateRequest(String newTitle) {
-}
+import jakarta.validation.constraints.NotBlank;
 
+public record PostUpdateRequest(
+        @NotBlank String newTitle,
+        @NotBlank String newContent
+) {}
