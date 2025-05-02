@@ -30,4 +30,12 @@ public class GlobalExceptionHandler {
                 ResponseUtil.error(500, PostErrorMessage.INTERNAL_SERVER_ERROR.getMessage())
         );
     }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<?> handleForbidden(ForbiddenException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ResponseUtil.error(403, e.getMessage()));
+    }
+
+
 }
