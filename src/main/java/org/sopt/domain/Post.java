@@ -1,30 +1,34 @@
 package org.sopt.domain;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
+@Entity
 public class Post {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String title;
-    private final LocalDateTime createdAt;
 
 
-    public Post(int id, String title) {
-        this.id = id;
-        this.title = title;
-        this.createdAt = LocalDateTime.now();
+    public Post() {
     }
 
-    public int getId() {
-        return this.id;
+    public Post(String title) {
+        this.title = title;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {
         return this.title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void updateTitle(String newTitle) {
+        this.title = newTitle;
     }
-
-
 }

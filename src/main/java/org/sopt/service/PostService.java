@@ -1,65 +1,86 @@
 package org.sopt.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.sopt.domain.Post;
+import org.sopt.dto.request.PostRequest;
+import org.sopt.dto.request.PostUpdateRequest;
+import org.sopt.dto.response.PostResponse;
+import org.sopt.global.exception.PostErrorMessage;
+import org.sopt.mapper.PostMapper;
 import org.sopt.repository.PostRepository;
-import org.sopt.util.IdGenerator;
 import org.sopt.util.Validator;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class PostService {
-    private final PostRepository postRepository = new PostRepository();
-    private LocalDateTime latestPostCreatedTime;
+    private final PostRepository postRepository;
 
-    public void createPost(String title) {
-        int id = IdGenerator.generatePostId();
+    public PostService(final PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
-        if (latestPostCreatedTime != null && Duration.between(latestPostCreatedTime, LocalDateTime.now()).toMinutes() < 3) {
-            throw new IllegalStateException("❌ 도배 방지 : 게시글은 마지막 작성 후 3분이 지나야 작성 가능합니다.");
+    @Transactional
+    public void createPost(final PostRequest postRequest) {
 
+        Validator.validateEmpty(postRequest.getTitle());
+        Validator.validateMaxLength(postRequest.getTitle());
+
+        if (postRepository.existsByTitle(postRequest.getTitle())) {
+            throw new IllegalArgumentException(PostErrorMessage.POST_ALREADY_EXISTS_ERROR.getMessage());
         }
 
-        Validator.validateEmpty(title);
-        Validator.validateMaxLength(title);
-
-        if (postRepository.isExistByTitle(title)) {
-            throw new IllegalArgumentException("❌ 이미 존재하는 제목입니다!");
-        }
-
-        Post post = new Post(id, title);
+        Post post = PostMapper.toEntity(postRequest);
         postRepository.save(post);
 
-        latestPostCreatedTime = LocalDateTime.now();
     }
 
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<PostResponse> getAllPosts() {
+        List<Post> posts = postRepository.findAll();
+        return PostMapper.toResponseList(posts);
     }
 
-    public Post getPostById(int id) {
-        return postRepository.findPostById(id);
+    @Transactional(readOnly = true)
+    public PostResponse getPostById(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(PostErrorMessage.POST_NOT_FOUND_ERROR.getMessage()));
+        return PostMapper.toResponse(post);
     }
 
-    public boolean updatePost(int updateId, String newTitle) {
-        Post post = postRepository.findPostById(updateId);
-        Validator.validateMaxLength(newTitle);
-        Validator.validateEmpty(newTitle);
+    @Transactional
+    public void updatePost(Long updateId, final PostUpdateRequest postUpdateRequest) {
+        Post post = postRepository.findById(updateId)
+                .orElseThrow(() -> new EntityNotFoundException(PostErrorMessage.POST_NOT_FOUND_ERROR.getMessage()));
 
-        if (post == null) {
-            return false;
-        }
-        post.setTitle(newTitle);
-        return true;
+        Validator.validateMaxLength(postUpdateRequest.newTitle());
+        Validator.validateEmpty(postUpdateRequest.newTitle());
+
+        String newTitle = PostMapper.extractNewTitle(postUpdateRequest);
+        post.updateTitle(newTitle);
     }
 
-    public List<Post> getPostByKeyword(String keyword) {
+
+    @Transactional(readOnly = true)
+    public List<PostResponse> getPostByKeyword(String keyword) {
         Validator.validateEmpty(keyword);
-        return postRepository.findPostByKeyWord(keyword);
+
+        List<Post> result = postRepository.findByTitleContaining(keyword);
+        if (result.isEmpty()) {
+            throw new EntityNotFoundException(PostErrorMessage.POST_NOT_FOUND_KEYWORD_ERROR.getMessage());
+        }
+
+        return PostMapper.toResponseList(result);
     }
 
-    public boolean deletePostById(int id) {
-        return postRepository.delete(id);
+    @Transactional
+    public void deletePost(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(PostErrorMessage.POST_NOT_FOUND_ERROR.getMessage()));
+
+        postRepository.delete(post);
     }
+
 }
