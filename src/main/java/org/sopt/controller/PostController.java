@@ -22,7 +22,6 @@ public class PostController {
         this.postService = postService;
     }
 
-    //dto class로 사용한 경우 예시
     @PostMapping
     public ResponseEntity<?> createPost(@RequestHeader("userId") Long userId, @RequestBody final PostCreateRequest postCreateRequest) {
         postService.createPost(userId, postCreateRequest);
