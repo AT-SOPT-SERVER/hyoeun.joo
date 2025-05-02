@@ -1,7 +1,7 @@
 package org.sopt.controller;
 
-import org.sopt.dto.request.PostRequest;
-import org.sopt.dto.request.PostUpdateRequest;
+import org.sopt.dto.request.post.PostCreateRequest;
+import org.sopt.dto.request.post.PostUpdateRequest;
 import org.sopt.dto.response.PostDetailResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.global.response.PostResponseMessage;
@@ -24,8 +24,8 @@ public class PostController {
 
     //dto class로 사용한 경우 예시
     @PostMapping
-    public ResponseEntity<?> createPost(@RequestHeader("userId") Long userId, @RequestBody final PostRequest postRequest) {
-        postService.createPost(userId, postRequest);
+    public ResponseEntity<?> createPost(@RequestHeader("userId") Long userId, @RequestBody final PostCreateRequest postCreateRequest) {
+        postService.createPost(userId, postCreateRequest);
         return ResponseEntity.ok(ResponseUtil.success(PostResponseMessage.POST_CREATE_SUCCESS.getMessage(), null));
     }
 

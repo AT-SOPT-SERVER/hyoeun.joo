@@ -2,7 +2,7 @@ package org.sopt.service;
 
 import jakarta.transaction.Transactional;
 import org.sopt.domain.User;
-import org.sopt.dto.request.UserCreate;
+import org.sopt.dto.request.user.UserCreateRequest;
 import org.sopt.repository.UserRepository;
 import org.sopt.util.Validator;
 import org.springframework.stereotype.Service;
@@ -17,11 +17,11 @@ public class UserService {
     }
 
     @Transactional
-    public void createUser(UserCreate userCreate) {
-        Validator.validateEmpty(userCreate.name());
-        Validator.validateMaxLength(userCreate.name());
+    public void createUser(UserCreateRequest userCreateRequest) {
+        Validator.validateEmpty(userCreateRequest.name());
+        Validator.validateMaxLength(userCreateRequest.name());
 
-        User user = new User(userCreate.name());
+        User user = new User(userCreateRequest.name());
         userRepository.save(user);
     }
 }

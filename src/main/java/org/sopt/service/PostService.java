@@ -3,8 +3,8 @@ package org.sopt.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.sopt.domain.Post;
 import org.sopt.domain.User;
-import org.sopt.dto.request.PostRequest;
-import org.sopt.dto.request.PostUpdateRequest;
+import org.sopt.dto.request.post.PostCreateRequest;
+import org.sopt.dto.request.post.PostUpdateRequest;
 import org.sopt.dto.response.PostDetailResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.global.exception.PostErrorMessage;
@@ -28,20 +28,20 @@ public class PostService {
     }
 
     @Transactional
-    public void createPost(Long userId, final PostRequest postRequest) {
+    public void createPost(Long userId, final PostCreateRequest postCreateRequest) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
-        Validator.validateEmpty(postRequest.getTitle());
-        Validator.validateEmpty(postRequest.getContent());
-        Validator.validateMaxLength(postRequest.getTitle());
+        Validator.validateEmpty(postCreateRequest.title());
+        Validator.validateEmpty(postCreateRequest.content());
+        Validator.validateMaxLength(postCreateRequest.title());
 
-        if (postRepository.existsByTitle(postRequest.getTitle())) {
+        if (postRepository.existsByTitle(postCreateRequest.title())) {
             throw new IllegalArgumentException(PostErrorMessage.POST_ALREADY_EXISTS_ERROR.getMessage());
         }
 
 
-        Post post = PostMapper.toEntity(postRequest, user);
+        Post post = PostMapper.toEntity(postCreateRequest, user);
         postRepository.save(post);
 
     }

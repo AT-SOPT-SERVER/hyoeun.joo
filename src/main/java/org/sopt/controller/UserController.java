@@ -1,6 +1,6 @@
 package org.sopt.controller;
 
-import org.sopt.dto.request.UserCreate;
+import org.sopt.dto.request.user.UserCreateRequest;
 import org.sopt.service.UserService;
 import org.sopt.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +20,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody UserCreate userCreate) {
-        userService.createUser(userCreate);
+    public ResponseEntity<?> createUser(@RequestBody UserCreateRequest userCreateRequest) {
+        userService.createUser(userCreateRequest);
         return ResponseEntity.ok(ResponseUtil.success("유저 생성 성공", null));
     }
 }

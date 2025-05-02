@@ -1,4 +1,4 @@
-package org.sopt.dto.request;
+package org.sopt.dto.request.post;
 
 import jakarta.validation.constraints.NotBlank;
 

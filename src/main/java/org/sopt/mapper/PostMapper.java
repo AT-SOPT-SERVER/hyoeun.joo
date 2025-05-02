@@ -2,8 +2,8 @@ package org.sopt.mapper;
 
 import org.sopt.domain.Post;
 import org.sopt.domain.User;
-import org.sopt.dto.request.PostRequest;
-import org.sopt.dto.request.PostUpdateRequest;
+import org.sopt.dto.request.post.PostCreateRequest;
+import org.sopt.dto.request.post.PostUpdateRequest;
 import org.sopt.dto.response.PostDetailResponse;
 import org.sopt.dto.response.PostResponse;
 
@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 public class PostMapper {
 
     //DTO class 사용
-    public static Post toEntity(PostRequest request, User user) {
-        return new Post(request.getTitle(), request.getContent(), user);
+    public static Post toEntity(PostCreateRequest request, User user) {
+        return new Post(request.title(), request.content(), user);
     }
 
     //record 사용 + dto에서 필요한 필드(title)만 가져오는 mapper 형태
