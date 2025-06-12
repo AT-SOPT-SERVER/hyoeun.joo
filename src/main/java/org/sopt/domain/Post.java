@@ -12,12 +12,20 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String content;
 
-    public Post() {
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    protected Post() {
     }
 
-    public Post(String title) {
+    public Post(String title, String content, User user) {
         this.title = title;
+        this.content = content;
+        this.user = user;
     }
 
     public Long getId() {
@@ -28,7 +36,19 @@ public class Post {
         return this.title;
     }
 
+    public String getContent() {
+        return this.content;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
     public void updateTitle(String newTitle) {
         this.title = newTitle;
+    }
+
+    public void updateContent(String newContent) {
+        this.content = newContent;
     }
 }
