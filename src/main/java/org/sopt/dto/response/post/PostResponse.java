@@ -1,4 +1,4 @@
-package org.sopt.dto.response;
+package org.sopt.dto.response.post;
 
 public record PostResponse(String authorName, String Title) {
 }
