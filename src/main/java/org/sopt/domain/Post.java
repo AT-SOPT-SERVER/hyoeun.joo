@@ -1,8 +1,13 @@
 package org.sopt.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post {
 
     @Id
@@ -19,29 +24,10 @@ public class Post {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    protected Post() {
-    }
-
     public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;
         this.user = user;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public String getContent() {
-        return this.content;
-    }
-
-    public User getUser() {
-        return user;
     }
 
     public void updateTitle(String newTitle) {

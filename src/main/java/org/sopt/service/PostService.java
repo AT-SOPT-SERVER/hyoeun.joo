@@ -1,12 +1,13 @@
 package org.sopt.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.sopt.domain.Post;
 import org.sopt.domain.User;
 import org.sopt.dto.request.post.PostCreateRequest;
 import org.sopt.dto.request.post.PostUpdateRequest;
-import org.sopt.dto.response.PostDetailResponse;
-import org.sopt.dto.response.PostResponse;
+import org.sopt.dto.response.post.PostDetailResponse;
+import org.sopt.dto.response.post.PostResponse;
 import org.sopt.global.exception.PostErrorMessage;
 import org.sopt.mapper.PostMapper;
 import org.sopt.repository.PostRepository;
@@ -18,14 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public PostService(final PostRepository postRepository, UserRepository userRepository) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-    }
 
     @Transactional
     public void createPost(Long userId, final PostCreateRequest postCreateRequest) {

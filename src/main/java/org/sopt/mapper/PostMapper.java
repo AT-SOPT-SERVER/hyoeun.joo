@@ -4,8 +4,8 @@ import org.sopt.domain.Post;
 import org.sopt.domain.User;
 import org.sopt.dto.request.post.PostCreateRequest;
 import org.sopt.dto.request.post.PostUpdateRequest;
-import org.sopt.dto.response.PostDetailResponse;
-import org.sopt.dto.response.PostResponse;
+import org.sopt.dto.response.post.PostDetailResponse;
+import org.sopt.dto.response.post.PostResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;
