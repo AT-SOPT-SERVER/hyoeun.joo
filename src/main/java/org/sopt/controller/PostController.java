@@ -2,8 +2,8 @@ package org.sopt.controller;
 
 import org.sopt.dto.request.post.PostCreateRequest;
 import org.sopt.dto.request.post.PostUpdateRequest;
-import org.sopt.dto.response.PostDetailResponse;
-import org.sopt.dto.response.PostResponse;
+import org.sopt.dto.response.post.PostDetailResponse;
+import org.sopt.dto.response.post.PostResponse;
 import org.sopt.dto.response.ResponseDTO;
 import org.sopt.global.response.PostResponseMessage;
 import org.sopt.service.PostService;
