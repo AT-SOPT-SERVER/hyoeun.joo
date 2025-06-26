@@ -1,6 +1,6 @@
 package org.sopt.util;
 
-import org.sopt.dto.response.ResponseDTO;
+import org.sopt.global.ResponseDTO;
 
 public class ResponseUtil {
 
