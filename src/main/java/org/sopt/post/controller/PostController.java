@@ -1,11 +1,12 @@
 package org.sopt.post.controller;
 
+import org.sopt.global.ResponseDTO;
+import org.sopt.global.response.PostResponseMessage;
 import org.sopt.post.dto.request.PostCreateRequest;
 import org.sopt.post.dto.request.PostUpdateRequest;
 import org.sopt.post.dto.response.PostDetailResponse;
+import org.sopt.post.dto.response.PostPageResponse;
 import org.sopt.post.dto.response.PostResponse;
-import org.sopt.global.ResponseDTO;
-import org.sopt.global.response.PostResponseMessage;
 import org.sopt.post.service.PostService;
 import org.sopt.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
@@ -38,10 +39,17 @@ public class PostController {
         return ResponseEntity.ok(ResponseUtil.success(PostResponseMessage.POST_CREATE_SUCCESS.getMessage(), null));
     }
 
+
     @GetMapping
-    public ResponseEntity<ResponseDTO<List<PostResponse>>> getAllPosts() {
-        List<PostResponse> posts = postService.getAllPosts();
-        return ResponseEntity.ok(ResponseUtil.success(PostResponseMessage.POST_GET_ALL_POSTS_SUCCESS.getMessage(), posts));
+    public ResponseEntity<ResponseDTO<PostPageResponse<PostResponse>>> getAllPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        PostPageResponse<PostResponse> postsPage = postService.getAllPosts(page, size);
+
+        return ResponseEntity.ok(
+                ResponseUtil.success(PostResponseMessage.POST_GET_ALL_POSTS_SUCCESS.getMessage(), postsPage)
+        );
     }
 
     @GetMapping("/{id}")
