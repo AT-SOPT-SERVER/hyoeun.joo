@@ -1,12 +1,13 @@
 package org.sopt.comment.controller;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.sopt.comment.dto.request.CommentCreateRequest;
 import org.sopt.comment.dto.request.CommentUpdateRequest;
-import org.sopt.global.ResponseDTO;
 import org.sopt.comment.dto.response.CommentResponse;
-import org.sopt.global.response.PostResponseMessage;
+import org.sopt.comment.response.CommentResponseMessage;
 import org.sopt.comment.service.CommentService;
+import org.sopt.global.ResponseDTO;
 import org.sopt.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,21 +29,21 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDTO<Void>> createComment(@PathVariable Long postId, @RequestBody CommentCreateRequest commentCreateRequest) {
+    public ResponseEntity<ResponseDTO<Void>> createComment(@PathVariable Long postId, @Valid @RequestBody CommentCreateRequest commentCreateRequest) {
         commentService.createComment(postId, commentCreateRequest);
-        return ResponseEntity.ok(ResponseUtil.success(PostResponseMessage.POST_CREATE_SUCCESS.getMessage(), null));
+        return ResponseEntity.ok(ResponseUtil.success(CommentResponseMessage.COMMENT_CREATE_SUCCESS.getMessage(), null));
     }
 
     @PatchMapping("/{commentId}")
-    public ResponseEntity<ResponseDTO<CommentResponse>> update(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody CommentUpdateRequest commentUpdateRequest) {
+    public ResponseEntity<ResponseDTO<CommentResponse>> updateComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody CommentUpdateRequest commentUpdateRequest) {
         commentService.updateComment(postId, commentId, commentUpdateRequest);
-        return ResponseEntity.ok(ResponseUtil.success(PostResponseMessage.POST_CREATE_SUCCESS.getMessage(), null));
+        return ResponseEntity.ok(ResponseUtil.success(CommentResponseMessage.COMMENT_UPDATE_SUCCESS.getMessage(), null));
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<ResponseDTO<Void>> delete(@PathVariable Long postId, @PathVariable Long commentId) {
+    public ResponseEntity<ResponseDTO<Void>> deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
         commentService.deleteComment(postId, commentId);
 
-        return ResponseEntity.ok(ResponseUtil.success(PostResponseMessage.POST_CREATE_SUCCESS.getMessage(), null));
+        return ResponseEntity.ok(ResponseUtil.success(CommentResponseMessage.COMMENT_DELETE_SUCCESS.getMessage(), null));
     }
 }
