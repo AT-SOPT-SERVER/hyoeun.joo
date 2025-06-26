@@ -2,17 +2,23 @@ package org.sopt.post.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.sopt.global.exception.PostErrorMessage;
 import org.sopt.post.domain.Post;
-import org.sopt.user.domain.User;
 import org.sopt.post.dto.request.PostCreateRequest;
 import org.sopt.post.dto.request.PostUpdateRequest;
 import org.sopt.post.dto.response.PostDetailResponse;
+import org.sopt.post.dto.response.PostPageResponse;
 import org.sopt.post.dto.response.PostResponse;
-import org.sopt.global.exception.PostErrorMessage;
 import org.sopt.post.mapper.PostMapper;
 import org.sopt.post.repository.PostRepository;
+import org.sopt.user.domain.User;
+import org.sopt.user.exception.UserErrorMessage;
 import org.sopt.user.repository.UserRepository;
 import org.sopt.util.Validator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +36,7 @@ public class PostService {
     public void createPost(Long userId, final PostCreateRequest postCreateRequest) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException(UserErrorMessage.USER_NOT_FOUND.getMessage()));
         Validator.validateEmpty(postCreateRequest.title());
         Validator.validateEmpty(postCreateRequest.content());
         Validator.validateMaxLength(postCreateRequest.title());
@@ -46,10 +52,24 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostResponse> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
-        return PostMapper.toResponseList(posts);
+    public PostPageResponse<PostResponse> getAllPosts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+
+        Page<Post> postPage = postRepository.findAll(pageable);
+
+        List<PostResponse> postResponses = postPage.getContent()
+                .stream()
+                .map(PostMapper::from)
+                .toList();
+
+        return new PostPageResponse<>(
+                postResponses,
+                postPage.getTotalPages(),
+                postPage.getNumber() + 1,
+                postPage.getTotalElements()
+        );
     }
+
 
     @Transactional(readOnly = true)
     public PostDetailResponse getPostById(Long id) {
